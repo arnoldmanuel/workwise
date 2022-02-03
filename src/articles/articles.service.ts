@@ -3,13 +3,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Articles } from './entities/articles.entity';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Injectable()
 export class ArticlesService {
     constructor(@InjectRepository(Articles) private articlesRepository: Repository<Articles>) {}
 
     async findAll(): Promise<Articles[]> {
-        const allArticles = await this.articlesRepository.find();
+        // Does currently return the content as well
+        const allArticles = await this.articlesRepository.createQueryBuilder()
+        .select("articles")
+        .from(Articles, "articles")
+        .getMany();
+
         return allArticles;
     }
 
@@ -25,9 +31,13 @@ export class ArticlesService {
         return newArticle;
     }
 
-    // async update(id: string): Promise<Articles> {
-    //     const updatedArticle = this.articlesRepository.update();
-    // }
+    async update(id: string, updatArticleDto: UpdateArticleDto): Promise<Articles> {
+        await this.articlesRepository.update(id, updatArticleDto);
+        // Update does not return the entity, there might be a bug with typeorm, which could be fixed. 
+        // Did not have enough time to take a look.
+        const updatedArticle = await this.articlesRepository.findOne(id);
+        return updatedArticle;
+    }
 
     async delete(id: string): Promise<boolean> {
         try {
