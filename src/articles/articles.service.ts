@@ -26,16 +26,6 @@ export class ArticlesService {
 
     async findOne(id: string): Promise<Articles> {
         const articleById = await this.articlesRepository.findOne(id);
-
-        const {result: { type }} = await lastValueFrom(
-            this.httpService.post(this.url, {"text": JSON.stringify(articleById.content)}, {headers: {
-                "Accept": "application/json", 
-                "Content-Type": "application/json" 
-            },}).pipe(
-              map(res => res.data)
-            )
-          );
-
         return articleById;
     }
 

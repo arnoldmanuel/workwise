@@ -14,8 +14,7 @@ export class Articles {
   @Column('text')
   content: string;
 
-  @Column()
-  @CreateDateColumn({type: Date})
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
   createdDate: Date;
 
   @Column({nullable: true})

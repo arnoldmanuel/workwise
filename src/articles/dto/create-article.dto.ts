@@ -8,8 +8,6 @@ export class CreateArticleDto {
     author: string;
     @IsString()
     content: string;
-    createdDate: Date;
     @IsOnlyDate()
     publicityDate: Date;
-    sentiment: string;
 }
