@@ -20,4 +20,7 @@ export class Articles {
 
   @Column({nullable: true})
   publicityDate: Date;
+
+  @Column({nullable: true})
+  sentiment: string;
 }

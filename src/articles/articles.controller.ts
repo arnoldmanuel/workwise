@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticlesService } from './articles.service';
 import { Articles } from './entities/articles.entity';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { ValidationPipe } from '../validation.pipe';
 
 @Controller('articles')
 export class ArticlesController {
@@ -19,12 +20,12 @@ export class ArticlesController {
     }
 
     @Post()
-    create(@Body() createArticleDto: CreateArticleDto): Promise<Articles> {
+    create(@Body(new ValidationPipe()) createArticleDto: CreateArticleDto): Promise<Articles> {
         return this.articlesService.create(createArticleDto);
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto): Promise<Articles> {
+    update(@Param('id') id: string, @Body(new ValidationPipe()) updateArticleDto: UpdateArticleDto): Promise<Articles> {
         return this.articlesService.update(id, updateArticleDto);
     }
 
