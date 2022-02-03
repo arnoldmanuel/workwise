@@ -8,6 +8,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_USERNAME: root
       MYSQL_DATABASE: rest-api-db
   adminer:
     image: adminer
